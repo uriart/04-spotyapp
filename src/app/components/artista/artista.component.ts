@@ -12,23 +12,32 @@ export class ArtistaComponent {
 
   artista: any = {};
   url: string;
+  topTracks: any[] = [];
   loading: boolean = true;
 
   constructor( private router: ActivatedRoute,
                private spotify: SpotifyService) {
     this.router.params.subscribe( params => {
       this.getArtista( params['id']);
+      this.getTopTracks( params['id']);
       this.loading = false;
     });
 
    }
 
-  getArtista ( id: string ){
+   getArtista ( id: string ){
     this.spotify.getArtista( id )
           .subscribe( artista => {
-            console.log(artista);
             this.artista = artista;
             this.url = artista['external_urls'].spotify;
+          });
+  }
+
+  getTopTracks ( id: string ){
+    this.spotify.getTopTracks( id )
+          .subscribe( topTracks => {
+            console.log(topTracks);
+            this.topTracks = topTracks;
           });
   }
 
